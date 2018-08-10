@@ -7,7 +7,7 @@ taxonomies.
 
 ## Installation
 
-Copy the plugin to the `wp-content/plugins` directory and activate via Plugins Admin page.
+Copy the plugin to the `wp-content/plugins` directory and activate via WordPress Plugins Admin page.
 
 ## Hooks
 
