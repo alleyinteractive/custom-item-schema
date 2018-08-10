@@ -8,6 +8,7 @@ taxonomies.
 ## Requirements
 
 - PHP 7+
+- WordPress 4.9+
 - [Fieldmanager](https://github.com/alleyinteractive/wordpress-fieldmanager)
 - [wp-seo](https://github.com/alleyinteractive/wp-seo)
 
