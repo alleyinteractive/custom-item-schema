@@ -32,7 +32,7 @@ function setup() {
 		add_action( "fm_term_{$taxonomy}", __NAMESPACE__ . '\add_editor_meta_box' );
 	}
 
-	// Register the homepage Schema settings page.
+	// Register the Homepage Schema settings page.
 	add_action( 'fm_submenu_custom_item_schema', function() {
 		( get_editor_meta_box_fields( 'submenu' ) )->activate_submenu_page();
 	} );
