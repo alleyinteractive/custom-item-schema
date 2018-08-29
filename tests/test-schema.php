@@ -75,6 +75,22 @@ class Test_Schema extends \WP_UnitTestCase {
 	}
 
 	/**
+	 * Test to ensure the schema displays on the homepage.
+	 */
+	public function test_homepage_schema() {
+		// Test the default schema.
+		update_option( 'custom_item_schema', '' );
+		$this->go_to( home_url() );
+		$this->assertTrue( is_home() );
+		$this->assertEmpty( $this->render_schema() );
+
+		// Test the schema once set.
+		$schema = '{"@context":"http:\/\/schema.org\/","@type":"WebSite"}';
+		update_option( 'custom_item_schema', $schema );
+		$this->assertContains( $schema, $this->render_schema() );
+	}
+
+	/**
 	 * Retrieve the contents of the `wp_head` action.
 	 *
 	 * @return string
