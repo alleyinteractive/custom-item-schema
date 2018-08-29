@@ -34,7 +34,7 @@ function setup() {
 
 	// Register the Homepage Schema settings page.
 	add_action( 'fm_submenu_custom_item_schema', function() {
-		( get_editor_meta_box_fields( 'submenu' ) )->activate_submenu_page();
+		get_editor_meta_box_fields( 'submenu' )->activate_submenu_page();
 	} );
 
 	if ( function_exists( 'fm_register_submenu_page' ) ) {
