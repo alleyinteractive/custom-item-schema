@@ -31,17 +31,25 @@ function setup() {
 	foreach ( $taxonomies as $taxonomy ) {
 		add_action( "fm_term_{$taxonomy}", __NAMESPACE__ . '\add_editor_meta_box' );
 	}
+
+	// Register the Homepage Schema settings page.
+	add_action( 'fm_submenu_custom_item_schema', function() {
+		get_editor_meta_box_fields( 'submenu' )->activate_submenu_page();
+	} );
+
+	if ( function_exists( 'fm_register_submenu_page' ) ) {
+		fm_register_submenu_page( 'custom_item_schema', 'themes.php', __( 'Homepage Schema', 'custom-item-schema' ), __( 'Homepage Schema', 'custom-item-schema' ), 'manage_options' );
+	}
 }
 add_action( 'plugins_loaded', __NAMESPACE__ . '\setup' );
 
 /**
- * Add a schema-editing meta box.
+ * Retrieve fields to edit the custom item schema.
  *
- * @param string $type The Fieldmanager type.
+ * @param  string $context Context of the fields (post/term/submenu).
+ * @return Fieldmanager_Schema_Editor
  */
-function add_editor_meta_box( $type ) {
-	list( $context ) = fm_calculate_context();
-
+function get_editor_meta_box_fields( string $context ) : Fieldmanager_Schema_Editor {
 	$suggested_formatting_tags = [
 		'#site_name#',
 		'#site_description#',
@@ -86,8 +94,18 @@ function add_editor_meta_box( $type ) {
 		$options['escape']['description'] = 'wp_kses_post';
 	}
 
-	$fm = new \Custom_Item_Schema\Fieldmanager_Schema_Editor( '', $options );
+	return new \Custom_Item_Schema\Fieldmanager_Schema_Editor( '', $options );
+}
 
+/**
+ * Add a schema-editing meta box.
+ *
+ * @param string $type The Fieldmanager type.
+ */
+function add_editor_meta_box( $type ) {
+	list( $context ) = fm_calculate_context();
+
+	$fm = get_editor_meta_box_fields( $context );
 	if ( 'post' === $context ) {
 		$fm->add_meta_box( __( 'Schema Editor', 'custom-item-schema' ), [ $type ] );
 	} elseif ( 'term' === $context ) {
@@ -144,6 +162,8 @@ function custom_item_schema() {
 		$schema = (string) get_post_meta( get_the_ID(), 'custom_item_schema', true );
 	} elseif ( is_tag() || is_category() ) {
 		$schema = (string) get_term_meta( get_queried_object_id(), 'custom_item_schema', true );
+	} elseif ( is_home() ) {
+		$schema = get_option( 'custom_item_schema' );
 	}
 
 	if ( ! empty( $schema ) ) {
