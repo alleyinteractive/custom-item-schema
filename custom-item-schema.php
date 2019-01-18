@@ -41,7 +41,7 @@ function setup() {
 		fm_register_submenu_page( 'custom_item_schema', 'themes.php', __( 'Homepage Schema', 'custom-item-schema' ), __( 'Homepage Schema', 'custom-item-schema' ), 'manage_options' );
 	}
 }
-add_action( 'wp_loaded', __NAMESPACE__ . '\setup' );
+add_action( 'init', __NAMESPACE__ . '\setup', 20 );
 
 /**
  * Retrieve fields to edit the custom item schema.
